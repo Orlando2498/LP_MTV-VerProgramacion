@@ -4,9 +4,9 @@ import SetUp.SetUp;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.xml.sax.Locator;
 
 import java.util.Objects;
+import java.util.Set;
 
 public class WebSite {
 
@@ -26,9 +26,24 @@ public class WebSite {
 
         Locators locators = new Locators();
         locators.Programacion(driver);
-        Thread.sleep(6000);
+        Thread.sleep(15000);
 
-        String expectedUrls = "https://tv.movistar.com.pe/tv-guide/now";
+        String expectedUrls = "https://tv.movistar.com.pe/tv-guide/epg";
+
+        // Obtén las ventanas abiertas
+        Set<String> windowHandles = driver.getWindowHandles();
+        String originalWindow = driver.getWindowHandle();
+        String newWindowHandle = null;
+
+        for (String handle : windowHandles) {
+            if (!handle.equals(originalWindow)) {
+                newWindowHandle = handle;
+                break;
+            }
+        }
+
+        // Cambia a la nueva pestaña
+        driver.switchTo().window(newWindowHandle);
 
         String actualUrl = driver.getCurrentUrl();
         System.out.println("La URL es: " + actualUrl);
